@@ -1,0 +1,49 @@
+# PostgreSQL (pgvector) + FastAPI + Next.js
+#   GEMINI_API_KEY=your-key docker compose up --build
+# Then open http://localhost:3000 (API docs: http://localhost:8000/docs)
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: documind
+      POSTGRES_PASSWORD: documind
+      POSTGRES_DB: documind
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U documind"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://documind:documind@db:5432/documind
+      GEMINI_API_KEY: ${GEMINI_API_KEY:?Set GEMINI_API_KEY (free key at https://aistudio.google.com/apikey)}
+      STORAGE_BACKEND: local
+      LOCAL_STORAGE_DIR: /app/uploads
+      CORS_ORIGINS: http://localhost:3000
+    ports:
+      - "8000:8000"
+    volumes:
+      - uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  uploads:
