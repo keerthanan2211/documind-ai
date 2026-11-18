@@ -1,13 +1,10 @@
 # DocuMind AI
 
+[![CI](https://github.com/keerthanan2211/documind-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/keerthanan2211/documind-ai/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Upload a PDF and ask questions about it in plain language. Answers come only from the document and cite the exact passages and page numbers they're based on, so you can check every claim.
 
 Built with retrieval-augmented generation (RAG): **FastAPI · PostgreSQL + pgvector · Google Gemini · Next.js · TypeScript · Docker**
-
-> **Live demo:** _add your deployed URL here_
-
-<!-- Add screenshots after you run the app -->
-<!-- ![Chat with citations](docs/screenshots/chat.png) -->
 
 ---
 
@@ -134,8 +131,8 @@ You need a free **Gemini API key** from [Google AI Studio](https://aistudio.goog
 ### Option 1: Docker
 
 ```bash
-git clone https://github.com/<your-username>/documind.git
-cd documind
+git clone https://github.com/keerthanan2211/documind-ai.git
+cd documind-ai
 GEMINI_API_KEY=your-key docker compose up --build
 ```
 
